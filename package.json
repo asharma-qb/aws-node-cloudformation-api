@@ -1,0 +1,20 @@
+{
+  "name": "aws-node-cloudformation-api",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.254.0",
+    "axios": "^1.2.3",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "serverless-http": "^3.1.1"
+  },
+  "scripts": {
+    "debug": "SET SLS_DEBUG=* && node --inspect %USERPROFILE%\\AppData\\Roaming\\nvm\\v18.0.0\\node_modules\\serverless\\bin\\serverless offline -s dev"
+  },
+  "devDependencies": {
+    "serverless-dotenv-plugin": "^4.0.2",
+    "serverless-offline": "^12.0.4",
+    "serverless-offline-dotenv": "^0.4.1"
+  }
+}

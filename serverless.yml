@@ -1,0 +1,30 @@
+org: asharma
+app: aws-node-cloudformation-api
+service: aws-node-cloudformation-api
+frameworkVersion: '3'
+useDotenv: true
+deploymentMethod: direct
+
+custom:
+  serverless-offline: ## add this two lines
+    httpPort: 4000 ## bellow "custom:" line
+
+plugins:
+  - serverless-offline
+  - serverless-offline-dotenv
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${env:stage, 'dev'}
+  region: us-east-1
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: '*'
+    timeout: 100
+    environment:
+      ACCESSKEYID: ${env:ACCESSKEYID}
+      SECRETACCESSKEY: ${env:SECRETACCESSKEY}
