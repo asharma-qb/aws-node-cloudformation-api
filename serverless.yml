@@ -3,7 +3,6 @@ app: aws-node-cloudformation-api
 service: aws-node-cloudformation-api
 frameworkVersion: '3'
 useDotenv: true
-deploymentMethod: direct
 
 custom:
   serverless-offline: ## add this two lines
@@ -16,15 +15,23 @@ plugins:
 provider:
   name: aws
   runtime: nodejs14.x
-  stage: ${env:stage, 'dev'}
+  stage: dev
   region: us-east-1
 
 functions:
   api:
     handler: handler.handler
     events:
-      - httpApi: '*'
-    timeout: 100
+      - http:
+          path: /cloudformationStack/create
+          method: post
+      - http:
+          path: /
+          method: post
+      - http:
+          path: /hello
+          method: get
+    timeout: 30
     environment:
       ACCESSKEYID: ${env:ACCESSKEYID}
       SECRETACCESSKEY: ${env:SECRETACCESSKEY}

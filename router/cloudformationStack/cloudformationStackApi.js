@@ -7,16 +7,38 @@ const {
   UpdateStackCommand,
 } = require('@aws-sdk/client-cloudformation');
 const { createTemplateURL } = require('../../utils/helper');
+const { ACMClient, RequestCertificateCommand } = require('@aws-sdk/client-acm');
+
+const credentials = {
+  accessKeyId: process.env.ACCESSKEYID,
+  secretAccessKey: process.env.SECRETACCESSKEY,
+};
 
 const client = new CloudFormationClient({
-  credentials: {
-    accessKeyId: process.env.ACCESSKEYID,
-    secretAccessKey: process.env.SECRETACCESSKEY,
-  },
+  credentials,
 });
 
 router.post('/create', async (req, res) => {
   try {
+    /* const acmConfig = {
+      credentials,
+      region: `us-east-1`,
+    };
+    const acmInput = {
+      DomainName: req.body.domainName,
+      ValidationMethod: 'DNS',
+      DomainValidationOptions: [
+        {
+          DomainName: req.body.domainName,
+          ValidationDomain: `${req.body.domainName}`,
+        },
+      ],
+    };
+    const acmClient = new ACMClient(acmConfig);
+    const acmCommand = new RequestCertificateCommand(acmInput);
+    const acmResponse = await acmClient.send(acmCommand);
+    const { CertificateArn } = acmResponse;
+    console.log(acmResponse); */
     const { stackName, templateBody, templateFileName, parameters } = req.body;
     const bucketName = `cloudformationtemplatebucketforqb`;
     const folderPath = [`templates`];
@@ -25,7 +47,11 @@ router.post('/create', async (req, res) => {
       folderPath,
       templateFileName
     );
-
+    /* parameters.push({
+      ParameterKey: 'CertificateArn',
+      ParameterValue:
+        'arn:aws:acm:us-east-1:978397049254:certificate/c14c7d97-5df1-41ba-b23e-663f95f97718',
+    }); */
     const createStackCommand = new CreateStackCommand({
       StackName: stackName,
       TemplateBody: templateBody,
@@ -46,6 +72,7 @@ router.put('/update', async (req, res) => {
     const { stackName, templateBody, templateFileName, parameters } = req.body;
     const bucketName = `cloudformationtemplatebucketforqb`;
     const folderPath = [`templates`];
+
     const templateURL = createTemplateURL(
       bucketName,
       folderPath,

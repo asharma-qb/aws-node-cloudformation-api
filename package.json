@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
+    "@aws-sdk/client-acm": "^3.282.0",
     "@aws-sdk/client-cloudformation": "^3.254.0",
     "axios": "^1.2.3",
     "body-parser": "^1.20.1",
